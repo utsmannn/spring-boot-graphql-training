@@ -1,5 +1,4 @@
 type Query {
-    hello(who: String): String!
     person: [Person!]!
 }
 
