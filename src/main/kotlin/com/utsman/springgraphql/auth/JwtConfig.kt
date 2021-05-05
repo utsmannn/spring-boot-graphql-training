@@ -14,7 +14,7 @@ object JwtConfig {
 
     private val algorithm = Algorithm.HMAC512(key)
 
-    val verifier: JWTVerifier = JWT
+    private val verifier: JWTVerifier = JWT
         .require(algorithm)
         .withIssuer(issuer)
         .build()
@@ -23,11 +23,12 @@ object JwtConfig {
         return try {
             verifier.verify(token)
         } catch (e: Throwable) {
+            e.printStackTrace()
             null
         }
     }
 
-    private fun expired(): Date {
+    fun expired(): Date {
         return Date(System.currentTimeMillis() + validity)
     }
 

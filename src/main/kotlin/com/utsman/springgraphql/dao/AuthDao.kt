@@ -5,11 +5,15 @@ import com.utsman.springgraphql.data.entity.Token
 import com.utsman.springgraphql.data.entity.User
 import com.utsman.springgraphql.data.table.UserTable
 import com.utsman.springgraphql.utils.CipherUtil
+import com.utsman.springgraphql.utils.toStringFormat
 import org.jetbrains.exposed.sql.Query
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import org.springframework.stereotype.Service
+import java.sql.Date
+import java.time.Instant
 
 class AuthDao {
     fun register(name: String, username: String, password: String): User = transaction {
@@ -38,6 +42,9 @@ class AuthDao {
         val passwordValid = encryptedPassword == userFound.password
         return@transaction if (passwordValid) {
             val generatedToken = JwtConfig.generateToken(userFound)
+            UserTable.update {
+                it[this.expiredDate] = JwtConfig.expired().toInstant()
+            }
             Token(generatedToken)
         } else {
             Token("Unknown")
@@ -74,7 +81,8 @@ class AuthDao {
                 id = it[UserTable.id].value,
                 name = it[UserTable.name],
                 username = it[UserTable.username],
-                password = it[UserTable.password]
+                password = it[UserTable.password],
+                expiredDate = it[UserTable.expiredDate]?.toStringFormat()
             )
         }
     }
