@@ -3,16 +3,29 @@
 ### query
 ```graphql
 type Query {
-    hello(who: String): String!
-    person: [Person!]!
+    login(username: String!, password: String!): Token!
+    user: User
+    users: [User]!
 }
 
 type Mutation {
-    addPerson(name: String!): Person!
+    register(name: String!, username: String!, password: String!): User!
 }
 
-type Person {
+type User {
     id: Int!,
-    name: String!
+    name: String!,
+    username: String!
+}
+
+type Token {
+    token: String!
+}
+```
+
+### Header
+```json
+{
+  "Authorization" : "Bearer <your-generated-token>"
 }
 ```

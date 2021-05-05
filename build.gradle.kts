@@ -33,6 +33,9 @@ dependencies {
 
     // db connector
     implementation("mysql:mysql-connector-java:8.0.22")
+
+    // auth0 jwt
+    implementation("com.auth0:java-jwt:3.15.0")
 }
 
 tasks.withType<KotlinCompile> {

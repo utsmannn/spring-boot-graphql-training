@@ -1,12 +1,26 @@
 type Query {
     person: [Person!]!
+    login(username: String!, password: String!): Token!
+    user: User
+    users: [User]!
 }
 
 type Mutation {
     addPerson(name: String!): Person!
+    register(name: String!, username: String!, password: String!): User!
 }
 
 type Person {
     id: Int!,
     name: String!
+}
+
+type User {
+    id: Int!,
+    name: String!,
+    username: String!
+}
+
+type Token {
+    token: String!
 }

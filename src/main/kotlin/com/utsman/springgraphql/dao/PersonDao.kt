@@ -1,7 +1,8 @@
 package com.utsman.springgraphql.dao
 
-import com.utsman.springgraphql.data.Person
+import com.utsman.springgraphql.data.entity.Person
 import com.utsman.springgraphql.data.table.PersonTable
+import graphql.schema.DataFetchingEnvironment
 import org.jetbrains.exposed.sql.Query
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class PersonDao {
+
     fun getPersons(): List<Person> = transaction {
         return@transaction PersonTable.selectAll().getAll()
     }
